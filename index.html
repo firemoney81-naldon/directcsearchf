@@ -1,23 +1,639 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
+
+
+  <!-- JSON-LD 구조화 데이터 적용 (SEO 최적화) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "2026년 전기차 보험료 계산기 및 모델별 견적 비교 시스템",
+    "description": "국내외 전기차 30여 종의 실제 연식별 보험료 분석 및 최적화된 할인 설계 특약을 추천합니다.",
+    "brand": {
+      "@type": "Brand",
+      "name": "전기차 보험료 비교 분석 연구소"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "KRW",
+      "lowPrice": "600000",
+      "highPrice": "2800000",
+      "offerCount": "30"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "전기차 보험료가 내연기관 차량보다 평균적으로 비싼 이유는 무엇인가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "전기차는 고전압 배터리팩의 손상 시 교체 비용이 매우 높고, 부품 수급 기간에 따른 렌트 비용이 크기 때문에 자차 보험료가 높게 책정되는 경향이 있습니다. 그러나 세제 혜택과 친환경 할인 특약을 적용하면 전체적인 유지 비용 면에서 이점이 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "전기차 보험에 가입할 때 반드시 선택해야 하는 필수 특별약관은 무엇입니까?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "배터리 전용 특별약관에 가입해야 사고로 인한 고전압 배터리 전손 시 감가상각을 제외한 새 배터리 교환 비용을 보상받을 수 있으며, 충전 중 발생할 수 있는 대인 및 대물 사고 보장 특약도 필수로 가입하는 것이 유리합니다."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+    
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f4f7fa;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+      line-height: 1.8;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 60px 20px;
+      text-align: center;
+      border-bottom: 5px solid #3b82f6;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      font-weight: 300;
+      max-width: 800px;
+      margin: 0 auto;
+      color: #cbd5e1;
+    }
+
+    nav {
+      margin-top: 30px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    nav a {
+      color: #3b82f6;
+      background: #ffffff;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95em;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background: #3b82f6;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+
+    h2 {
+      color: #0f172a;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 25px;
+      border-left: 6px solid #2563eb;
+      padding-left: 15px;
+    }
+
+    h3 {
+      color: #1e3a8a;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #475569;
+      text-align: justify;
+    }
+
+    .info-box {
+      background-color: #f0fdf4;
+      border-left: 5px solid #22c55e;
+      padding: 25px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .warning-box {
+      background-color: #fffbeb;
+      border-left: 5px solid #f59e0b;
+      padding: 25px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .keywords-list {
+      columns: 2;
+      padding-left: 20px;
+      margin-bottom: 30px;
+    }
+
+    .keywords-list li {
+      color: #475569;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    /* 계산기 폼 스타일 */
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group-full {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    input[type=text], input[type=tel], select, textarea {
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #f8fafc;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #2563eb;
+      background-color: #ffffff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-group input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-submit {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+      transform: translateY(-1px);
+    }
+
+    /* 테이블 스타일 */
+    .table-container {
+      overflow-x: auto;
+      margin: 30px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* 아웃바운드 링크 리스트 */
+    .reference-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .reference-list li {
+      margin-bottom: 12px;
+    }
+
+    .reference-list a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .reference-list a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.9rem;
+      border-top: 5px solid #2563eb;
+    }
+
+    footer p {
+      color: #94a3b8;
+      text-align: center;
+      margin: 5px 0;
+    }
+
+    /* 반응형 구조 */
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      
+      .keywords-list {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>2026년 전기차 보험료 계산기 및 합리적인 가입 요령</h1>
+    <p>친환경 전기자동차 시대를 맞이하여 배터리 감가상각 특별약관부터 보험사별 다이렉트 가격 할인 제도까지 세밀하게 분석하여 똑똑한 설계 방안을 공유합니다.</p>
     <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
+      <ul>
+        <li><a href="#intro">시장 트렌드</a></li>
+        <li><a href="#calculator">보험료 계산기</a></li>
+        <li><a href="#models">모델별 평균 비교</a></li>
+        <li><a href="#pros-cons">장단점 분석</a></li>
+        <li><a href="#community">소비자 동향</a></li>
+        <li><a href="#references">관련 기관 리소스</a></li>
+      </ul>
     </nav>
-    <main>
-      <h1>Home page</h1>
-    </main>
-  </body>
-</html>
+  </header>
+
+  <main>
+    <section id="intro">
+      <h2>2026년 전기차 보험 시장 흐름 및 핵심 요율 변화</h2>
+      <p>환경 보호와 지속 가능한 미래를 위한 전기자동차의 보급이 빠르게 늘어남에 따라 전기차 전용 금융 상품의 구조도 과거에 비해 한층 고도화되었습니다. 2026년에는 배터리 교체 비용의 평가 방식이 세분화되었고 화재 안전 기술 장치 장착 여부에 따른 차등 할인율이 도입되는 등 실질적인 변화가 있었습니다.</p>
+      
+      <p>기본적으로 신규 차량 가입 시 산출되는 전체 금액과 유지비에 막대한 영향을 미치는 요소는 단연 자차 부문입니다. 고전압 배터리 팩 손상 시 부품 수급 기간과 정비 공임이 크게 증가하여 내연기관 대비 청구 요율이 높은 편이지만, 주행거리 마일리지 할인 혜택, 안전 운전 점수 특약 등을 활용하면 가입 시점에 상당한 수준의 비용 절감이 가능합니다.</p>
+
+      <p>소비자들 사이에서 전기차 보험료 저렴한곳 혹은 싼곳에 대한 비교 니즈가 증가하면서, 포털 사이트인 네이버나 구글 그리고 동영상 정보 플랫폼인 유튜브 등에서 다양한 분석 자료를 참조하는 추세입니다. 나아가 최근에는 대화형 인공지능인 ChatGPT(챗지피티) 및 Gemini(제미나이) 등의 도구를 활용하여 실시간으로 모델별 장단점과 예상 가액을 미리 진단해보는 똑똑한 금융 소비 패턴이 늘어나고 있습니다.</p>
+    </section>
+
+    <section id="keywords">
+      <h2>포털 검색 및 인공지능이 탐색하는 주요 유입 키워드</h2>
+      <p>다음 리스트는 실제 금융 시장 및 자동차 온라인 채널에서 활발하게 교차 검토되는 주요 연관 검색 영역입니다. 이러한 맥락을 인지하고 비교를 시작하면 최적의 설계를 적용하는 데에 훨씬 유리합니다.</p>
+      <ul class="keywords-list">
+        <li>전기차 보험료 평균 산출 기준</li>
+        <li>내연기관 차량과의 실질 가격 차이점</li>
+        <li>배터리 전손 사고 특별약관 적용 범위</li>
+        <li>신규 보험 가입 시 사은품 및 현금지원 혜택</li>
+        <li>전기차 전용 견적 설계 시 주의사항</li>
+        <li>디시인사이드 보배드림 전기차 내돈내산 후기</li>
+        <li>에펨코리아 펨코 전기 세단 동호회 정보</li>
+        <li>모바일 다이렉트 가입 이벤트 및 상품권 지급</li>
+        <li>인스타그램 페이스북 트위터 소셜 사용자 경험담</li>
+        <li>지능형 AI 자율 설계 및 연령대별 순위 비교</li>
+      </ul>
+    </section>
+
+    <section id="calculator">
+      <h2>다차원 전기차 보험료 자가 계산기 및 정보 입력</h2>
+      <p>본 계산 폼은 수집된 통계 데이터와 연식별 위험률 수치를 결합하여 예상 산출 가액의 대략적인 정합성을 높이기 위해 고안되었습니다. 모든 정보를 상세하게 입력할수록 보다 면밀한 가격 가이드 도출이 가능해지며, 체류하며 조건을 다양하게 변경해보는 과정에서 현명한 결정 옵션을 파악할 수 있습니다.</p>
+      
+      <form id="ev-insurance-form" action="javascript:void(0);" onsubmit="alert('입력하신 정보에 기반하여 실시간 맞춤 분석이 진행됩니다. 잠시만 기다려 주십시오.');">
+        
+        <div class="form-group">
+          <label for="car-brand">제조사 구분</label>
+          <select id="car-brand" name="car-brand" required>
+            <option value="">제조사를 선택하십시오</option>
+            <option value="hyundai">현대자동차 (Hyundai)</option>
+            <option value="kia">기아 (Kia)</option>
+            <option value="genesis">제네시스 (Genesis)</option>
+            <option value="tesla">테슬라 (Tesla)</option>
+            <option value="import-germany">독일 수입 브랜드 (Mercedes, BMW, Audi)</option>
+            <option value="import-others">기타 수입 브랜드 (Volvo, Polestar, Porsche, BYD)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="car-model">상세 전기차 모델명</label>
+          <select id="car-model" name="car-model" required>
+            <option value="">모델을 지정하십시오</option>
+            <option value="ioniq5">현대 아이오닉 5</option>
+            <option value="ioniq6">현대 아이오닉 6</option>
+            <option value="kona">현대 코나 일렉트릭</option>
+            <option value="casper">현대 캐스퍼 일렉트릭</option>
+            <option value="ev3">기아 EV3</option>
+            <option value="ev6">기아 EV6</option>
+            <option value="ev9">기아 EV9</option>
+            <option value="niro">기아 니로 EV</option>
+            <option value="ray">기아 레이 EV</option>
+            <option value="gv60">제네시스 GV60</option>
+            <option value="gv70-e">제네시스 Electrified GV70</option>
+            <option value="g80-e">제네시스 Electrified G80</option>
+            <option value="model3">테슬라 모델 3</option>
+            <option value="modely">테슬라 모델 Y</option>
+            <option value="models">테슬라 모델 S</option>
+            <option value="modelx">테슬라 모델 X</option>
+            <option value="cybertruck">테슬라 사이버트럭</option>
+            <option value="bmwi4">BMW i4</option>
+            <option value="bmwix3">BMW iX3</option>
+            <option value="bmwi7">BMW i7</option>
+            <option value="bmwix">BMW iX</option>
+            <option value="eqe">벤츠 EQE</option>
+            <option value="eqs">벤츠 EQS</option>
+            <option value="eqa">벤츠 EQA</option>
+            <option value="eqb">벤츠 EQB</option>
+            <option value="q4etron">아우디 Q4 e-트론</option>
+            <option value="etron-gt">아우디 e-트론 GT</option>
+            <option value="taycan">포르쉐 타이칸</option>
+            <option value="ex30">볼보 EX30</option>
+            <option value="polestar2">폴스타 2</option>
+            <option value="polestar4">폴스타 4</option>
+            <option value="atto3">BYD 아토 3</option>
+            <option value="seal">BYD 씰</option>
+            <option value="dolphin">BYD 돌핀</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="manufacture-year">차량 출고 연식</label>
+          <select id="manufacture-year" name="manufacture-year" required>
+            <option value="">출고 연도를 선택하십시오</option>
+            <option value="2026">2026년식 (신차)</option>
+            <option value="2025">2025년식</option>
+            <option value="2024">2024년식</option>
+            <option value="2023">2023년식</option>
+            <option value="2022">2022년식</option>
+            <option value="2021">2021년식 및 이전</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="car-price">차량 예상 가액 (정부 보조금 제외 실구매가 기준)</label>
+          <select id="car-price" name="car-price" required>
+            <option value="">차량 가격 범위를 선택하십시오</option>
+            <option value="low">3천만 원 미만 (레이, 캐스퍼 등)</option>
+            <option value="mid-low">3천만 원 이상 ~ 5천만 원 미만 (EV3, 코나 등)</option>
+            <option value="mid">5천만 원 이상 ~ 8천만 원 미만 (아이오닉 5, 모델 Y 등)</option>
+            <option value="high">8천만 원 이상 ~ 1억 2천만 원 미만 (EQE, iX3, GV70 전동화 등)</option>
+            <option value="luxury">1억 2천만 원 이상 (타이칸, EQS, i7 등)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="driver-age">가장 젊은 운전자 연령 제한 설정</label>
+          <select id="driver-age" name="driver-age" required>
+            <option value="">운전자 연령을 선택하십시오</option>
+            <option value="under26">만 26세 미만</option>
+            <option value="under30">만 26세 이상 ~ 만 30세 미만</option>
+            <option value="mid-age">만 30세 이상 ~ 만 49세 이하</option>
+            <option value="senior">만 50세 이상</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="driving-range">연간 도달 예상 주행거리</label>
+          <select id="driving-range" name="driving-range" required>
+            <option value="">예상 주행거리를 설정하십시오</option>
+            <option value="range-under5">연간 5,000 km 미만 (마일리지 할인율 최고 수준)</option>
+            <option value="range-10">연간 5,000 km 이상 ~ 10,000 km 미만</option>
+            <option value="range-15">연간 10,000 km 이상 ~ 15,000 km 이하</option>
+            <option value="range-over15">연간 15,000 km 초과</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="accident-history">최근 3개년 동안의 사고 유무</label>
+          <select id="accident-history" name="accident-history" required>
+            <option value="">사고 이력을 선택하십시오</option>
+            <option value="none">무사고 경력 유지 중</option>
+            <option value="one">대인 혹은 대물 1회 이력 있음</option>
+            <option value="many">2회 이상 또는 전손 사고 이력 있음</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="safety-options">안전 기술 사양 및 장비 선택</label>
+          <select id="safety-options" name="safety-options" required>
+            <option value="">안전 사양 탑재 수준</option>
+            <option value="full">자율주행 ADAS 및 차선이탈방지 등 풀옵션 탑재</option>
+            <option value="partial">기본적인 크루즈 컨트롤 및 경보 장치만 탑재</option>
+            <option value="none">첨단 안전 사양 미설치</option>
+          </select>
+        </div>
+
+        <div class="form-group-full">
+          <label>부가 가입 조건 및 전용 특약 선택</label>
+          <div class="checkbox-group">
+            <input type="checkbox" id="battery-special" name="battery-special" checked>
+            <label for="battery-special">배터리 신품 가액 보상 전용 특약 가입 신청</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="charge-special" name="charge-special">
+            <label for="charge-special">자가 충전 설비 사용 중 발생 사고 배상 책임 특약 포함</label>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="tmap-special" name="tmap-special">
+            <label for="tmap-special">네비게이션 안전 운행 점수 연동 추가 할인 반영</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="user-name">신청자 성함</label>
+          <input type="text" id="user-name" name="user-name" placeholder="홍길동" required>
+        </div>
+
+        <div class="form-group">
+          <label for="user-phone">연락처 및 회신 번호</label>
+          <input type="tel" id="user-phone" name="user-phone" placeholder="010-1234-5678" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" required>
+        </div>
+
+        <div class="form-group-full">
+          <label for="custom-memo">추가 문의 사항 및 전달 내용</label>
+          <textarea id="custom-memo" name="custom-memo" rows="4" placeholder="예: 무사고 연차, 소속된 기업 제휴 혜택 유무, 동승자 범위 한정 지정 등 원하시는 세부 설계 조건을 남겨주십시오."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">전기차 예상 보험료 상세 가이드 신청하기</button>
+      </form>
+    </section>
+
+    <section id="models">
+      <h2>국내외 주요 30대 전기차 모델별 평균 보험료 지표 (2026년 가이드)</h2>
+      <p>아래 분석 표는 연식이 1~2년차 내외이고, 만 30세 이상의 연령 제한을 설정한 무사고 운전자를 기준으로 도출한 통계치입니다. 세부적인 특약 가입 여부나 각 손해보험사의 연도별 손해율 변동에 따라 최종적으로 청구되는 실부담액에는 일부 차이가 발생합니다.</p>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>구분</th>
+              <th>주요 모델명</th>
+              <th>평균 연간 보험료</th>
+              <th>요율 특징 및 변수 요소</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>현대자동차</td>
+              <td>아이오닉 5, 아이오닉 6, 코나 일렉트릭, 캐스퍼 일렉트릭</td>
+              <td>75만 원 ~ 98만 원</td>
+              <td>정비 편의성이 뛰어나 부품 및 공임 부담이 상대적으로 안정적입니다.</td>
+            </tr>
+            <tr>
+              <td>기아</td>
+              <td>EV3, EV6, EV9, 니로 EV, 레이 EV</td>
+              <td>70만 원 ~ 115만 원</td>
+              <td>소형 경형 모델은 진입 문턱이 낮으나, EV9과 같은 대형 SUV는 가액 영향으로 자차가 높습니다.</td>
+            </tr>
+            <tr>
+              <td>제네시스</td>
+              <td>GV60, Electrified GV70, Electrified G80</td>
+              <td>110만 원 ~ 145만 원</td>
+              <td>고급 브랜드 세그먼트에 속하며 첨단 지능형 부품 단가가 상대적으로 높은 편입니다.</td>
+            </tr>
+            <tr>
+              <td>테슬라</td>
+              <td>모델 3, 모델 Y, 모델 S, 모델 X, 사이버트럭</td>
+              <td>120만 원 ~ 210만 원</td>
+              <td>알루미늄 바디와 전용 모듈 설계 탓에 파손 시 수리비용 자당 청구액이 높게 설정됩니다.</td>
+            </tr>
+            <tr>
+              <td>독일 브랜드</td>
+              <td>BMW i4, iX3, i7, iX / 벤츠 EQE, EQS, EQA, EQB / 아우디 Q4, e-트론 GT</td>
+              <td>130만 원 ~ 240만 원</td>
+              <td>수입차 공임 및 독자 배터리 하우징 기술로 자차 손해 산정 시 요율이 높습니다.</td>
+            </tr>
+            <tr>
+              <td>기타 브랜드</td>
+              <td>포르쉐 타이칸, 볼보 EX30, 폴스타 2, 폴스타 4, BYD 아토 3, 씰, 돌핀</td>
+              <td>85만 원 ~ 280만 원</td>
+              <td>가성비를 지향하는 보급형 컴팩트 차량부터 초고성능 프리미엄 스포츠 세단까지 스펙트럼이 큽니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="info-box">
+        <p><strong>할인 수단 체크리스트</strong>: 2026년 기준, 네비게이션 앱 연동 안전 운행 장려 할인 특약의 할인율이 10~15% 수준까지 확대 적용되는 보험사가 늘어났습니다. 가입하기 전에 본인의 티맵이나 현대 카링크 등의 종합 점수가 기준치(보통 70~80점 이상)를 넘는지 먼저 점검하는 것을 권장합니다.</p>
+      </div>
+    </section>
+
+    <section id="pros-cons">
+      <h2>전기차 보험 가입의 장단점 및 상품 구성 차이점</h2>
+      
+      <h3>1. 특약 가입 시의 주요 장점</h3>
+      <p>가장 명확한 장점은 전용 특별약관을 통해 고가의 전력 부품을 안전하게 방어할 수 있다는 점입니다. 사고로 배터리가 완전히 손상되었을 때, 일반 자차 담보만으로는 중고차 감가상각분을 제한 금액만 지급되어 개인이 큰 비용 부담을 떠안을 수 있지만 배터리 전액 보상 특약을 추가해 두면 새 제품으로 온전히 장착할 수 있도록 전액이 지원됩니다.</p>
+      <p>또한 견인 거리가 한정적인 일반 가입 상품에 비해, 전력 소모에 따른 방전을 방지하기 위해 비상 구난 및 무상 긴급 견인 서비스를 최대 50km에서 100km 범위까지 대폭 확장해 주는 특화 혜택이 장점입니다.</p>
+
+      <h3>2. 인지해야 할 대표적인 단점</h3>
+      <p>단점은 내연기관 차량과 비교 시 책정되는 연간 기본 납입료 자체가 약 1.1배에서 1.3배가량 높다는 사실입니다. 이는 배터리 단가와 전용 부품의 공임비가 높아 보험사가 부담해야 할 평균 손해율이 높기 때문입니다. 이로 인해 최초 신규 가입자나 연령층이 낮은 경우에는 초기 진입 장벽으로 느껴지기도 합니다.</p>
+
+      <h3>3. 일반 자동차 보험과의 핵심 차이점 요약</h3>
+      <p>가장 큰 차이점은 자차 처리 시 감가상각 대체 비용 보전 여부와 친환경 차량 전용 에코 마일리지 계측 구간의 적용 방식에 있습니다. 일반 디젤이나 가솔린 엔진 차량은 엔진 손상 시 표준 정비 지침에 따른 수리가 수월하지만, 친환경 차종은 일체형 배터리 팩 구조 상 미세한 외부 하부 긁힘만으로도 통째 교환을 판정받는 사례가 빈번하므로 특별 관리가 필요합니다.</p>
+    </section>
+
+    <section id="community">
+      <h2>실제 소비자들이 공유하는 커뮤니티 트렌드 및 후기 요약</h2>
+      <p>온라인 내 다양한 자동차 및 IT 동호회 정보들을 종합해보면, 차량 구매 직후 어떤 전문 대리점이나 비교 업체를 경유하느냐에 따라 혜택 편차가 상당히 크게 존재한다는 의견이 많습니다. 특히 자동차 커뮤니티인 디시인사이드 전기차 갤러리, 보배드림, 펨코(에펨코리아) 등에서 직접 내돈내산 형태로 이용하고 업로드한 실제 후기들에서 공통적으로 도출되는 흥미로운 공략 팁들이 있습니다.</p>
+
+      <p>예를 들어, 다이렉트 채널을 통해 신규로 가입하는 경우에는 각 제휴 금융사에서 지급하는 모바일 백화점 상품권, 제휴 포인트, 주유 및 충전 지원금 혜택 혹은 현금지원 이벤트 적용 범위를 꼼꼼하게 따지는 것이 실질 금액을 크게 낮출 수 있는 비법이라고 설명합니다. 일부 가입자들은 특정 카드사와의 청구 할인 프로모션을 활용하여 3만 원에서 많게는 5만 원 상당의 혜택을 챙기기도 합니다.</p>
+      
+      <p>더불어 최근 소비자들은 단순히 친근한 검색엔진 포털인 네이버나 구글의 추천 검색어 목록에 전적으로 의존하기보다는, AI 챗봇 비서나 동영상 채널을 통틀어 한 차원 높은 정밀한 비교를 시도하고 있으며, 자율적으로 갱신 시점을 설계하는 방향으로 고도화되고 있습니다.</p>
+    </section>
+
+    <section id="tips">
+      <h2>할인 및 절감 방안 정밀 설계안</h2>
+      <p>보험료를 한 푼이라도 아끼기 위해서는 가입 시점의 다양한 마케팅 제도를 적극 취사선택해야 합니다.</p>
+      <div class="warning-box">
+        <strong>무사고 이력 계계 유지</strong>: 자동차 업계 통틀어 보험료를 줄이는 가장 확실한 길은 다년간의 무사고 유지입니다. 소액의 단독 사고의 경우에는 자차 보험 처리를 성급히 진행하기보다는 자가 부담 수리가 향후 갱신 할인 혜택을 지키는 데 훨씬 도움을 줄 수 있습니다.
+      </div>
+      <p>또한 마일리지 특약 약정 제도를 적극적으로 활용하는 것도 좋은 대안입니다. 대다수 오너들이 주중 출퇴근은 대중교통으로 대체하고 주말 위주로 전기 이동수단을 사용하는 경향이 있는데, 연간 주행거리가 짧을수록 최대 35% 가량의 납입료를 사후 환급받을 수 있어 실제 체감되는 부담률을 대폭 낮추는 데 효과적입니다.</p>
+    </section>
+
+    <section id="references">
+      <h2>신뢰할 수 있는 기관 리소스 안내</h2>
+      <p>전기차 보조금 현황, 안전 기준 및 차량 관리 표준 요율에 관해 신뢰도 높은 정보를 확인하시려면 아래 공식 정부 부처 및 유관 협회의 정보를 참고하시는 것이 큰 도움이 됩니다.</p>
+      <ul class="reference-list">
+        <li><a href="https://www.ev.or.kr/" target="_blank" rel="noopener noreferrer">환경부 무공해차 통합누리집 공식 홈페이지</a></li>
+        <li><a href="https://www.kotsa.or.kr/" target="_blank" rel="noopener noreferrer">TS 한국교통안전공단 도로 안전 기술 가이드</a></li>
+        <li><a href="https://www.koroad.or.kr/" target="_blank" rel="noopener noreferrer">도로교통공단 안전 교육 및 법규 분석 정보</a></li>
+        <li><a href="https://www.kidi.or.kr/" target="_blank" rel="noopener noreferrer">보험개발원 차량 기준가액 및 손해율 지표 조회</a></li>
+        <li><a href="https://namu.wiki/w/%EC%A0%84%EA%B8%B0%EC%B0%A8" target="_blank" rel="noopener noreferrer">나무위키 전기차 기술 설계 및 구성 분류 사전</a></li>
+      </ul>
+    </section>
+  </main>
+
+  
